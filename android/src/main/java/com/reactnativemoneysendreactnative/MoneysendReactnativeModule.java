@@ -1,7 +1,13 @@
 package com.reactnativemoneysendreactnative;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -13,8 +19,9 @@ import com.upayments.moneysend.model.MoneyData;
 
 
 @ReactModule(name = MoneysendReactnativeModule.NAME)
-public class MoneysendReactnativeModule extends ReactContextBaseJavaModule {
+public class MoneysendReactnativeModule extends ReactContextBaseJavaModule implements ActivityEventListener {
     public static final String NAME = "MoneysendReactnative";
+    private static final String TAG = "MONEY";
 
     private Callback callback;
     private Activity context;
@@ -26,7 +33,7 @@ public class MoneysendReactnativeModule extends ReactContextBaseJavaModule {
     public MoneysendReactnativeModule(ReactApplicationContext reactContext) {
         super(reactContext);
          this.reactContext = reactContext;
-        this.reactContext.addActivityEventListener(this);
+        // this.reactContext.addActivityEventListener(this);
 
     }
 
@@ -56,12 +63,10 @@ public class MoneysendReactnativeModule extends ReactContextBaseJavaModule {
 
         this.callback = callback;
         try {
-        Log.d(TAG, "INIT MONEYSEND REACT");
 
-        String senderid = senderid;
-        String urlmoney = url;
-        String apikey = token;
-        BioCaller.MoneyCreateLink(activity, senderid, urlmoney, apikey, 2929);
+
+
+        BioCaller.MoneyCreateLink(activity, senderid, urlmoney, token, 2929);
         }catch (Exception e){
          Log.d(TAG, e.getMessage());
          callBackError(e.getMessage());
@@ -103,7 +108,7 @@ public class MoneysendReactnativeModule extends ReactContextBaseJavaModule {
 
   }
 
-   @Override
+    @Override
   public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
     Log.d(TAG, "requestCode: " + requestCode);
     Log.d(TAG, "resultCode: " + resultCode);
@@ -112,14 +117,14 @@ public class MoneysendReactnativeModule extends ReactContextBaseJavaModule {
      if(resultCode == 2929){
        MoneyData resultada = BioCaller.getMoneyResultData();
       try {
-        callBack(resultada);
+        callBack(resultada.trx);
       } catch (Exception e){
         callBackError("Exception " + e.getMessage());
       }
     } else if(requestCode == 2930){
-      MoneyData resultada = BioCaller.getFaceIdResultData();
+      MoneyData resultada = BioCaller.getMoneyResultData();
       try {
-        callBack(resultada);
+        callBack(resultada.trx);
       } catch (Exception e){
         callBackError("Exception " + e.getMessage());
       }
