@@ -1,0 +1,11 @@
+framework module moneysend {
+  umbrella header "moneysend.h"
+
+  export *
+  module * { export * }
+}
+
+module moneysend.Swift {
+    header "moneysend-Swift.h"
+    requires objc
+}
