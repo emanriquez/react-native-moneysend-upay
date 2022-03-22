@@ -55,7 +55,9 @@ repositories {
 
 dependencies {
     //noinspection GradleDynamicVersion
+   
     implementation "com.facebook.react:react-native:+"
-    implementation fileTree(dir: '../libs/', include: ['*.aar', '*.jar'], exclude: [])
+     implementation project(':moneysend')
+   
     // From node_modules
 }
