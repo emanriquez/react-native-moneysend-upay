@@ -26,6 +26,7 @@ export function MoneySendLink(senderid: string, url: string, apikey: string) {
         url,
         apikey,
         (error: any, resultId: any) => {
+          console.log('MONEYSEND1', error, resultId);
           if (error) {
             reject(error);
           } else {

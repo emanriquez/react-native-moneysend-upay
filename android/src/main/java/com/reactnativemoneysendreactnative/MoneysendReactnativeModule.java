@@ -34,6 +34,7 @@ public class MoneysendReactnativeModule extends ReactContextBaseJavaModule imple
         super(reactContext);
          this.reactContext = reactContext;
         // this.reactContext.addActivityEventListener(this);
+        this.reactContext.addActivityEventListener(this);
 
     }
 
@@ -74,7 +75,7 @@ public class MoneysendReactnativeModule extends ReactContextBaseJavaModule imple
     }
 
     private void callBackError(String sMensaje) {
-    callback.invoke("ERROR", sMensaje);
+        callback.invoke("ERROR", sMensaje);
     }
 
     private void callBack(String sMensaje) {
@@ -84,54 +85,35 @@ public class MoneysendReactnativeModule extends ReactContextBaseJavaModule imple
 
 
     @Override
-  public void onNewIntent(Intent intent) {
+  public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+    Log.d(TAG, "requestCode: " + requestCode);
+    Log.d(TAG, "resultCode: " + resultCode);
+    Log.d(TAG, "data: " + data);
 
-  }
+    if(requestCode==2929){
+        if(resultCode== Activity.RESULT_OK){
+            MoneyData result = BioCaller.getMoneyResultData();
+            Log.d("MoneySendLink", "onActivityResult: ");
+            Log.d("MoneySendLink", result.trx);
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    Log.d(TAG, "requestCode2: " + requestCode);
-    Log.d(TAG, "resultCode2: " + resultCode);
-    Log.d(TAG, "data2: " + data);
+            try {
+                callBack(result.trx);
+            } catch (Exception e){
+                Log.e("MoneySendLink", e.toString());
+               // callBackError("TRX ERROR");
+            }
 
-    if(requestCode == 2929){
-      if(resultCode == Activity.RESULT_OK){
-        MoneyData resultada = BioCaller.getMoneyResultData();
 
-       
-        // Log.d(TAG, "data2: " + json);
-        //Toast.makeText(this, "Flujo completado para " + faceIdResultData.scanDocumentData.getRut().toString() + " " + faceIdResultData.resultado, Toast.LENGTH_SHORT).show();
-      } else {
-        //Toast.makeText(this, "Flujo cancelado", Toast.LENGTH_SHORT).show();
-      }
+            }
     }
 
 
   }
 
     @Override
-  public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-    Log.d(TAG, "requestCode: " + requestCode);
-    Log.d(TAG, "resultCode: " + resultCode);
-    Log.d(TAG, "data: " + data);
+    public void onNewIntent(Intent intent) {
 
-     if(resultCode == 2929){
-       MoneyData resultada = BioCaller.getMoneyResultData();
-      try {
-        callBack(resultada.trx);
-      } catch (Exception e){
-        callBackError("Exception " + e.getMessage());
-      }
-    } else if(requestCode == 2930){
-      MoneyData resultada = BioCaller.getMoneyResultData();
-      try {
-        callBack(resultada.trx);
-      } catch (Exception e){
-        callBackError("Exception " + e.getMessage());
-      }
     }
-  }
-
-
 
 
 }

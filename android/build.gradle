@@ -58,7 +58,7 @@ dependencies {
     //noinspection GradleDynamicVersion
    
     implementation "com.facebook.react:react-native:+"
-    implementation files('src/moneysend/moneysend.aar')
+    implementation files('src/moneysend/moneysend-2.aar')
 
     // From node_modules
 }

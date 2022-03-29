@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('moneysend-release.aar'))
+artifacts.add("default", file('moneysend-debug.aar'))
