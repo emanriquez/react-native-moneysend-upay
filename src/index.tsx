@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform, BackHandler } from 'react-native';
 
 const LINKING_ERROR =
   `The package 'react-native-moneysend-upay' doesn't seem to be linked. Make sure: \n\n` +
@@ -19,7 +19,8 @@ const MoneySendUPAY = NativeModules.MoneysendReactnative
 
 export function MoneySendLink(senderid: string, url: string, apikey: string) {
   return new Promise((resolve, reject) => {
-    // console.log('CALL MONEYSENDLINK');
+    console.log('CALL MONEYSENDLINK');
+    console.log(resolve, reject);
     try {
       NativeModules.MoneysendReactnative.MoneySendUPAY(
         senderid,
